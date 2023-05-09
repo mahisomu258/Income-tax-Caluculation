@@ -1,0 +1,229 @@
+#include<stdio.h>
+#include<string.h>
+								
+double findIncomeTax(int amount)
+{	
+	// Function definition(Based on Tax slab)
+	//Application of INCOME TAX SLAB
+	 
+	double ans;
+	 if(amount<=250000)
+		{
+			ans = 0;
+		}
+	else if(amount>250000 && amount<=500000)
+		{
+			ans = 0.05 * amount;
+		}
+	else if(amount>500000 && amount<=750000)
+		{
+			ans = 12500 + 0.1 * (amount-500000);
+		}
+	else if(amount>750000 && amount<=1000000)
+		{
+		ans = 37500 + 0.15 * (amount-750000);
+		}
+	else if(amount>1000000 && amount<=1250000)
+		{
+			ans = 75000 + 0.2 * (amount-1000000);
+		}
+	else if(amount>1250000 && amount<=1500000)
+		{
+			ans = 125000 + 0.25 * (amount-1250000);
+		}
+	else
+		{
+			ans = 187500 + 0.3 * (amount - 1500000);
+		}
+	
+	return ans;
+	
+}
+
+// Function Defintion of Home loan deduction 
+double home_loan_deduction(double tax,int amount)
+{
+	double ans;
+	if(amount<=1000000)
+		{
+			ans=0;
+		}
+	else if(amount>=1000000 && amount<=5000000)
+		{
+			ans = tax * 0.23;
+		}
+	else
+		{
+			ans = tax * 0.27;
+		}
+	
+	return ans;
+		
+}
+
+// Function Defintion of Student loan deduction 
+double student_loan_deduction(double tax,int amount)
+{
+	double ans;
+	if(amount>0)
+		{
+			ans=0.25;
+		}
+	else
+		{
+			ans = 0;
+		}
+	
+	return ans;
+		
+}
+
+// Function Defintion of health/LifeInsurance deduction 
+double insurance_deduction(double tax,int amount)
+{
+	double ans;
+	if(amount<=500000)
+		{
+			ans=0;
+		}
+	else if(amount>500000 && amount<=2000000)
+		{
+			ans = tax * 0.18;
+		}
+	else
+		{
+			ans = tax * 0.22;
+		}
+	
+	return ans;
+		
+}
+
+// Function Defintion of House rent deduction 
+double house_rent(double tax,int rent)
+	{
+		return 0.3 * rent;
+	}
+	
+// calling function (Int Main)	
+int main()
+{   
+    int n;
+    int i;
+    int age;
+    char name[40];
+    char Phonenumber[20];
+    char aadhar[30];
+    printf("\t\n\n----------------------------------------------------------------------------------------------------\n");
+    printf("\n\t\t\t** Welcome to the INCOME TAX portal**\n");
+	printf("\n\t\t\t** We will help you in calculating Your INCOME TAX **\n\n");
+	printf("----------------------------------------------------------------------------------------------------\n");
+	int amount=0;
+	printf("  For how many members do you want to calculate the tax :");
+	scanf("%d",&n);
+	for(i=0;i<=n;i++)
+	{   
+	    name :
+	    printf("\n\n** Enter your Personal details correctly **\n\n");
+	    printf("\n  [PLEASE ENTER YOUR CORRECT NAME] ");
+	    printf("\n  Enter Your Name: ");
+	    scanf(" %[^\n]",name);
+	    if(strlen(name)>30 || strlen(name)<3)
+	    {
+	        printf("Invalid name");
+	        goto name;
+	    }
+	    age :
+	   	printf("\n  [PLEASE ENTER THE POSITIVE NUMBER] ");
+		printf("\n  Enter Your Age: ");
+		scanf("%d",&age);
+		if(age<18)
+		{
+		    printf("You are not to ELIGIBLE to  pay INCOME tax");
+		    return 0;
+		}
+		
+        Phonenumber :
+	   	printf("\n  [PLEASE ENTER A POSITIVE NUMBER WITH 10 Digits]  ");
+		printf("\n  Enter Your phone Number : ");
+		scanf(" %[^\n]",Phonenumber);
+		if(strlen(Phonenumber)>10 || strlen(Phonenumber)<10)
+		{
+		    printf("  INVALID PHONE NUMBER");
+		    goto Phonenumber;
+		}
+	
+	    aadhar :
+	     printf("\n  [PLEASE ENTER CORRECT AND ONLY 12 DIGITS NUMBER]  ");
+	    printf(" \n  Enter the Aadhar Number: ");
+	    scanf(" %[^\n]",aadhar);
+	    if(strlen(aadhar)>12 || strlen(aadhar)<12)
+	    {
+	        printf("  INVALID AADHAR NUMBER");
+	        goto aadhar;
+	    }
+	    amount :
+	    printf("\n  [PLEASE ENTER ONLY NUMBERS] ");
+		printf(" \n  Enter the Anual income : ");
+		
+		scanf("%d",&amount);
+		if(amount<=0){
+		    printf("  Amount must be greater than 0");
+		    goto amount;
+		}
+		double tax = findIncomeTax(amount);
+		printf("\n  [PLEASE ENTER VALUE ONLY IF YOUR ARE ELIGIBLE,OTHERWISE ENTER ZERO(0)] ");
+		printf(" \n  Enter home loan amount: ");
+		int hloan;
+		scanf("%d",&hloan);
+		double h_ded = home_loan_deduction(tax,hloan);
+		printf("\n  [PLEASE ENTER VALUE ONLY IF YOUR ARE ELIGIBLE,OTHERWISE ENTER ZERO(0)] ");
+		printf(" \n  Enter student loan amount: ");
+		int sloan;
+		scanf("%d",&sloan);
+		double s_ded = student_loan_deduction(tax,sloan);
+		 
+		printf("\n  [PLEASE ENTER AMOUNT VALUE ONLY IF YOUR ARE ELIGIBLE FOR ANY INSURANCE,OTHERWISE ENTER ZERO(0)]");
+		printf(" \n   Enter Insurance Status : ");
+		int status;
+		scanf("%d",&status);
+		double i_ded = insurance_deduction(tax,amount);
+		printf("\n  [PLEASE ENTER VALUE ONLY IF YOUR ARE PAYING HOME RENT ,OTHERWISE ENTER ZERO(0)] ");
+		printf(" \n  Enter house rent(Per month): ");
+		
+		int hrent;
+		scanf("%d",&hrent);
+		double hr_ded = house_rent(tax,hrent);
+		double tot_ded = h_ded + s_ded + i_ded + hr_ded ;
+		double answer = tax-tot_ded;
+		printf("------------------------------------------------------");
+		
+		if(answer<=0)
+		
+			{
+				printf("\n\nHurray! You've got no taxes :)\n\n");
+			}
+		else
+		{
+			printf("\n  RESULT\n ");
+			printf("\n  Income tax to be paid per year: %f\n",answer);
+			amount-=answer;
+			double take_home = (double) amount/12.0;
+			printf("\n  Final amount in hand per month: %f\n",take_home);
+			printf("\n  Amount Deducted: %f\n",tot_ded);
+			
+		}
+		
+		printf("------------------------------------------------------");
+		printf("\n  PERSONAL DETAILS OF THE USER\n");
+		printf("\n  The name of the person is : %s\n",name);
+		printf("\n  The age of the of the person is : %d\n",age);
+		printf("\n  The Phonenumber of the person is : %s\n",Phonenumber);
+		printf("\n  The AADHAR NUMBER of the person is : %s\n",aadhar);
+		printf("\n------------------------------------------------------");
+		
+			
+	}
+	
+	
+}
